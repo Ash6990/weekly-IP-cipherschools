@@ -1,0 +1,33 @@
+<!Doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login Validation</title>
+</head>
+<body>
+	<form>
+		Email: <input type="text" id="email" placeholder="Jaldi daal bsdk" required>
+		Password:<input type="password" id="password" placeholder="loophole" required>
+		<button type="button" id="btn">Login</button>
+	</form>
+	<script type="text/javascript">
+		var entered = document.getElementById("email");
+		var pass= document.getElementById("password");
+		var button = document.getElementById("btn");
+		button.addEventListener("click",function(){
+			var email = entered.value;
+			var password = pass.value;
+			var correctemail = "anurag@gmail.com";
+			var correctpassword = "anursad";
+			if (email === correctemail && password === correctpassword){window.open("okay");
+			}
+			else{
+				alert("fuck off");
+			
+			}
+		});
+	</script>
+</body>
+</html>

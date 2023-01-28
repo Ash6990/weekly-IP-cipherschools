@@ -1,0 +1,148 @@
+<p id='add'></p>
+<p id="sub"></p>
+<p id="datatype"></p>
+<script>
+	var a,b=10,20;
+	var sum = a+b;
+	document.getElementById("add").innerHTML = sum;
+</script>
+<script>
+	var b=4;
+	var c=9;
+	var sub = b-c;
+	document.getElementById("sub").innerHTML = sub;
+	document.getElementById("datatype").innerHTML = typeof b;
+</script>
+
+ class Board {
+  // Constructor to initialize the grid
+  constructor() {
+    this.grid = [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null]
+    ];
+  }
+
+  // Method to render the game board
+  render() {
+    // Loop through the grid and render each cell
+    for (let i = 0; i < this.grid.length; i++) {
+      for (let j = 0; j < this.grid[i].length; j++) {
+        let cell = this.grid[i][j];
+
+        // If the cell is null, render a space
+        if (cell === null) {
+          process.stdout.write('   ');
+        } else {
+          // Otherwise, render the player's symbol
+          process.stdout.write(' ' + cell + ' ');
+        }
+
+        // Render a vertical separator after each cell
+        if (j < this.grid[i].length - 1) {
+          process.stdout.write('|');
+        }
+      }
+
+      // Move to the next line
+      process.stdout.write('\n');
+
+      // Render a horizontal separator after each row
+      if (i < this.grid.length - 1) {
+        process.stdout.write('---|---|---\n');
+      }
+    }
+  }
+
+  // Method to check if a player has won
+  checkWin() {
+    // Check for horizontal wins
+    for (let i = 0; i < this.grid.length; i++) {
+      if (this.grid[i][0] === this.grid[i][1] && this.grid[i][1] === this.grid[i][2] && this.grid[i][0] != null) {
+        return this.grid[i][0];
+      }
+    }
+
+    // Check for vertical wins
+    for (let i = 0; i < this.grid.length; i++) {
+      if (this.grid[0][i] === this.grid[1][i] && this.grid[1][i] === this.grid[2][i] && this.grid[0][i] != null) {
+        return this.grid[0][i];
+      }
+    }
+
+    // Check for diagonal wins
+    if (this.grid[0][0] === this.grid[1][1] && this.grid[1][1] === this.grid[2][2] && this.grid[0][0] != null) {
+      return this.grid[0][0];
+    }
+    if (this.grid[0][2] === this.grid[1][1] && this.grid[1][1] === this.grid[2][0] && this.grid[0][2] != null) {
+      return this.grid[0][2];
+    }
+
+    // If no player has won, return null
+    return null;
+  }
+}
+class Game {
+  // Constructor to initialize the game board and set the current player
+  constructor() {
+    this.board = new Board();
+    this.currentPlayer = 'X';
+  }
+
+  // Method to play a move at the specified position
+  playMove(i, j) {
+    // Check if the position is already occupied
+    if (this.board.grid[i][j] !== null) {
+      console.log('Position already occupied, try again!');
+      return;
+    }
+
+    // Place the player's symbol at the specified position
+    this.board.grid[i][j] = this.currentPlayer;
+
+    // Switch to the other player
+    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+  }
+
+  // Method to start the game
+  start() {
+    // Keep playing until the game is over
+    while (!this.isOver()) {
+      // Render the game board
+      this.board.render();
+
+      // Prompt the player to enter their move
+      const move = prompt(this.currentPlayer + ', enter your move (i, j):');
+      const [i, j] = move.split(',').map(x => parseInt(x));
+
+      // Play the move
+      this.playMove(i, j);
+    }
+
+    // Render the final game board
+    this.board.render();
+
+    // Announce the winner or declare a tie
+    if (this.board.checkWin() !== null) {
+      console.log(this.board.checkWin() + ' wins!');
+    } else {
+      console.log('It\'s a tie!');
+    }
+  }
+
+  // Method to check if the game is over
+  isOver() {
+    // The game is over if there's a winner or the board is full
+    return this.board.checkWin() !== null || this.board.grid.every(row => row.every(cell => cell !== null));
+  }
+}
+const game = new Game();
+game.start();
+
+
+
+
+
+
+
